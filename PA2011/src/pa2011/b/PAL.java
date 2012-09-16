@@ -2,7 +2,7 @@ package pa2011.b;
 
 import graph.BiGraph;
 import graph.Edge;
-import graph.MarkedEdge;
+import graph.Edge;
 import graph.Vertex;
 
 import java.io.FileInputStream;
@@ -41,29 +41,31 @@ public class PAL {
 		scanner = new Scanner(in);
 		int nVertices = scanner.nextInt();
 		int nEdges = scanner.nextInt();
-		BiGraph<MarkedEdge, Vertex<MarkedEdge>> graph = new BiGraph<MarkedEdge, Vertex<MarkedEdge>>(nVertices);
+		BiGraph<Edge, Vertex<Edge>> graph = new BiGraph<Edge, Vertex<Edge>>(nVertices);
+		
 		for(int i=0;i<nVertices;i++){
-			graph.addVertex(i, new Vertex<MarkedEdge>());
+			graph.addVertex(i, new Vertex<Edge>());
 		}
 		while(scanner.hasNext()){
 			int vA = scanner.nextInt() - 1;
 			int vB = scanner.nextInt() - 1;
-			graph.addBiEdge(vA, vB, new MarkedEdge(), new MarkedEdge());
+			graph.addBiEdge(vA, vB, new Edge(), new Edge());
 		}
 		
-//		System.out.println(graph.toString());
+		BiGraph<Edge, Vertex<Edge>> workingGraph = new BiGraph<Edge, Vertex<Edge>>(graph);
+		System.out.println(workingGraph.toString());
 		
 	}
 	
-	int longestWay(BiGraph<MarkedEdge, Vertex<MarkedEdge>> graph, List<Integer> way){
+	int longestWay(BiGraph<Edge, Vertex<Edge>> graph, List<Integer> way){
 		ArrayList<LinkedList<Integer>> pWays = new ArrayList<LinkedList<Integer>>();
 		ArrayList<Integer> waysLength = new ArrayList<Integer>();
 		int nWays = 0;
-		List<Vertex<MarkedEdge>> vertices = graph.getVertices();
+		List<Vertex<Edge>> vertices = graph.getVertices();
 		
 		// stworzenie listy potencjalnych dróg		
 		for(int i=0;i<vertices.size();i++){
-			Vertex<MarkedEdge> vertex = vertices.get(i);
+			Vertex<Edge> vertex = vertices.get(i);
 			if(vertex.getEdges().size() == 1){
 				LinkedList<Integer> pWay = new LinkedList<Integer>();
 				pWay.add(i);
@@ -85,14 +87,15 @@ public class PAL {
 				if(w!=null){
 					int iLast = w.getLast();
 					int iNext = 0;
-					Vertex<MarkedEdge> lastV = vertices.get(iLast);
+					Vertex<Edge> lastV = vertices.get(iLast);
+					
 					// idz do nastepnego
-					for(MarkedEdge mE:lastV.getEdges()){
-						if(mE.active){
-							iNext = mE.getEnd();
-							break;
-						}
-					}
+//					for(Edge mE:lastV.getEdges()){
+//						if(mE.active){
+//							iNext = mE.getEnd();
+//							break;
+//						}
+//					}
 					
 				}
 			}
