@@ -1,16 +1,17 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Vertex<E extends Edge> {
 	
-	protected ArrayList<E> edges;
+	protected List<E> edges;
 	
 	public Vertex(){
 		edges = new ArrayList<E>();
 	}
 	
-	public ArrayList<E> getEdges(){
+	public List<E> getEdges(){
 		return edges;
 	}
 	
