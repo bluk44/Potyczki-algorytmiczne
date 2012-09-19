@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * abstract class representing graph
@@ -28,6 +29,10 @@ public class Graph<E extends Edge, V extends Vertex<E>> {
 		return vertices;
 	}
 	
+	public V getVertex(int vertexId){
+		return vertices.get(vertexId);
+	}
+	
 	public void addVertex(int index, V vertex){
 		vertices.add(vertex);
 	}
@@ -35,10 +40,25 @@ public class Graph<E extends Edge, V extends Vertex<E>> {
 	public void addDirectedEdge(int start, int end, E edge){
 		Vertex<E> vertexStart = vertices.get(start);
 		Vertex<E> vertexEnd = vertices.get(end);
-		if(vertexStart != null && vertexEnd != null){
-			edge.setEnd(end);
-			vertexStart.addEdge(edge);
+		edge.setEnd(end);
+		vertexStart.addEdge(edge);
+	}
+	/**
+	 * 
+	 * @param vertexID id of current vertex 
+	 * @param originID id of previous vertex
+	 * @return id of next vertex or -1 
+	 */
+	public int nextVertex(int vertexID,int originID){
+		V vertex = vertices.get(vertexID);
+		List<E> edges = vertex.getEdges();
+		
+		for(E edge:edges){
+			if(edge.getEnd() != originID){
+				return edge.getEnd();
+			}
 		}
+		return -1;
 	}
 	
 	@Override

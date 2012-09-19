@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Vertex<E extends Edge> {
@@ -19,6 +20,15 @@ public class Vertex<E extends Edge> {
 		edges.add(edge);
 	}
 	
+	public void removeEdge(int end){
+		Iterator<E> it = edges.iterator();
+		while(it.hasNext()){
+			if(it.next().getEnd() == end){
+				it.remove();
+				break;
+			}
+		}
+	}
 	@Override
 	public String toString() {
 		String vertex = "";
