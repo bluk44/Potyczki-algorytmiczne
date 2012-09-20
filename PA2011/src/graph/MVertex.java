@@ -30,7 +30,7 @@ public class MVertex extends Vertex<MEdge> {
 	}
 	
 	public String toString() {
-		String vertex = "active: "+nActive+"\n";
+		String vertex = "wayID: "+ wayID + " active: "+nActive+"\n";
 		for(MEdge e:edges){
 			vertex = vertex + e + "\n";
 		}

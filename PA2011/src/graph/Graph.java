@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -49,7 +50,7 @@ public class Graph<E extends Edge, V extends Vertex<E>> {
 	 * @param originID id of previous vertex
 	 * @return id of next vertex or -1 
 	 */
-	public int nextVertex(int vertexID,int originID){
+	public int nextVertex(int vertexID, int originID){
 		V vertex = vertices.get(vertexID);
 		List<E> edges = vertex.getEdges();
 		
@@ -59,6 +60,26 @@ public class Graph<E extends Edge, V extends Vertex<E>> {
 			}
 		}
 		return -1;
+	}
+	
+	public int[] bfs(int start){
+		int[] order = new int[vertices.size()];
+		int count = 0 ;
+		LinkedList<Integer> lV = new LinkedList<Integer>();
+		lV.add(start);
+		while(!lV.isEmpty()){
+			int indexV = lV.pop();
+			if(order[indexV] == 0){
+				order[indexV] = ++count;
+				V v = vertices.get(indexV);
+				for(E e: v.getEdges()){
+					if(order[e.getEnd()] == 0){
+						lV.add(e.getEnd());
+					}
+				}
+			}
+		}		
+		return order;
 	}
 	
 	@Override

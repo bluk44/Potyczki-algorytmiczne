@@ -12,7 +12,7 @@ import java.util.List;
  * @author boodex
  *
  */
-public class BiGraph<E extends Edge,V extends Vertex<E> > extends Graph<E, V>{
+public class BiGraph<E extends Edge,V extends Vertex<E>> extends Graph<E, V>{
 	
 	public BiGraph(int initialCapacity){
 		super(initialCapacity);
@@ -22,7 +22,7 @@ public class BiGraph<E extends Edge,V extends Vertex<E> > extends Graph<E, V>{
 		
 	}
 	
-	public BiGraph(BiGraph<E,V> biGraph){
+	public BiGraph(BiGraph<E,V> biGraph){	
 		super(biGraph);
 	}
 	
