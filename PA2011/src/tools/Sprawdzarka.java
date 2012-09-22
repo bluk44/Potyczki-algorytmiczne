@@ -6,14 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class Sprawdzarka {
 
-	public void check(Task task, File testDir) throws FileNotFoundException {
+	public static void check(Task task, File testDir) throws FileNotFoundException {
 		HashMap<String, File> inputFiles = new HashMap<String, File>(), outputFiles = new HashMap<String, File>();
 		ArrayList<String> testNames = new ArrayList<String>();
 
@@ -38,29 +38,34 @@ public class Sprawdzarka {
 
 		for (int i = 0; i < names.length; i++) {
 			FileInputStream ansIn = new FileInputStream(names[i] + ".out");
-			FileInputStream testIn = new FileInputStream(names[i] + ".out");
+			FileInputStream testIn = new FileInputStream(names[i] + ".in");
+			ByteArrayOutputStream testOut = new ByteArrayOutputStream();
 			println(names[i] + ": ");
-			byte[] answer = readAnswer(ansIn);
-			byte[] result = task.solve(testIn);
 
-			String sAns = new String(answer);
-			String sRes = new String(result);
+			task.solve(testIn, testOut);
+
+			byte[] answer = readAnswer(ansIn);
+			byte[] result = testOut.toByteArray();
+
+			String sAns = new String(answer).trim();
+			String sRes = new String(result).trim();
 
 			if (isCorrect(result, answer)) {
-				System.out.println("OK: "+ sAns + "RESULT: "+ sRes);
+				println("OK: [TEST] " + sRes + " [CORRECT] " + sAns);
 			} else {
-				println("FAIL: "+ sAns + sRes);
+				printerr("FAIL: [TEST] " + sRes + "[CORRECT] " + sAns);
 			}
 		}
 	}
 
-	private byte[] readAnswer(InputStream in) {
+	private static byte[] readAnswer(InputStream in) {
 		ByteArrayOutputStream ansOut = new ByteArrayOutputStream();
 		byte b = 0;
 		try {
 			while ((b = (byte) in.read()) != -1) {
 				ansOut.write(b);
 			}
+			in.close();
 			return ansOut.toByteArray();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +74,7 @@ public class Sprawdzarka {
 		return null;
 	}
 
-	private boolean isCorrect(byte[] b1, byte[] b2) {
+	private static boolean isCorrect(byte[] b1, byte[] b2) {
 		if (b1.length != b2.length) {
 			return false;
 		} else {
@@ -82,40 +87,12 @@ public class Sprawdzarka {
 		return true;
 	}
 
-	private void println(String s) {
+	private static void println(String s) {
 		System.out.println(s);
 	}
-
-	public static void main(String[] args) {
-		Sprawdzarka spr = new Sprawdzarka();
-		Chuj chuj = new Chuj();
-		try {
-			spr.check(chuj, new File("testy/PAL"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
-
-class Chuj implements Task {
-
-	@Override
-	public byte[] solve(InputStream in) {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte b = 0;
-		try {
-			while ((b = (byte) in.read()) != -1) {
-				out.write(b);
-			}
-			return out.toByteArray();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		return out.toByteArray();
+	
+	private static void printerr(String s) {
+		System.err.println(s);
 	}
 
 }

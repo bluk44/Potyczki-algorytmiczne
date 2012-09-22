@@ -61,7 +61,7 @@ public class Tree<E extends Edge, V extends Vertex<E>> extends BiGraph<E,V>{
 				}
 			}
 		}
-		d = range[indexV];
+		d = range[indexV] + 1;
 		return d;
 	}
 }

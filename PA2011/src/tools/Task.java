@@ -1,9 +1,8 @@
 package tools;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public interface Task {
-		
-	byte[] solve(InputStream in);
-	
+	void solve(InputStream in, OutputStream out);
 }

@@ -1,16 +1,18 @@
 package pa2011.b;
 
 import graph.Edge;
-import graph.MEdge;
-import graph.MVertex;
 import graph.Vertex;
 import graph.tree.Tree;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
+
+import tools.Sprawdzarka;
+import tools.Task;
 
 /**
  * Zadanie: PAL Paliwo
@@ -21,29 +23,29 @@ import java.util.Scanner;
  * 
  */
 
-public class PAL {
+public class PAL implements Task {
 
-	String inPath = "testy/PAL/test0.in";
+	String testPath = "testy/PAL";
 	Tree<Edge, Vertex<Edge>> tree = null;
 
 	static public void main(String[] args) {
-		
 		PAL zadanie = new PAL();
-		System.out.println("rozwiazanie: "+ zadanie.solve());
+		try {
+			Sprawdzarka.check(zadanie, new File(zadanie.testPath));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// zadanie.solve(System.in, System.out);
+
 	}
 
-	public int solve() {
+	public void solve(InputStream in, OutputStream out) {
 
 		int result = -1;
 
-		FileInputStream in = null;
 		Scanner scanner = null;
-		try {
-			in = new FileInputStream(inPath);
-		} catch (FileNotFoundException e) {
-			System.out.println("test file not found");
-			return -1;
-		}
+		PrintWriter writer = new PrintWriter(out);
 
 		scanner = new Scanner(in);
 		int nVertices = scanner.nextInt();
@@ -60,21 +62,24 @@ public class PAL {
 			tree.addBiEdge(vA, vB, new Edge(), new Edge());
 		}
 		int diameter = tree.diameter();
-		
-		if(fuel <= diameter - 1){
+
+		if (fuel <= diameter - 1) {
 			result = fuel + 1;
 		} else {
 			result = diameter;
 			int left_fuel = fuel - diameter + 1;
 			left_fuel = left_fuel / 2;
 			int left_cities = nVertices - diameter;
-			if(left_cities <= left_fuel){
+			if (left_cities <= left_fuel) {
 				result += left_cities;
-			} else{
+			} else {
 				result += left_fuel;
 			}
 		}
-		
-		return result;
+		writer.print(result);
+		writer.print("\n");
+		writer.flush();
+
 	}
+
 }
